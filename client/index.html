@@ -1,44 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-	<head>
-		<script src="js/jquery.js"></script>
-		<script src="js/handlebars.js"></script>
-        <script id="entry-template" type="text/x-handlebars-template">
-          <div class="entry">
-            <h1>{{title}}</h1>
-            <div class="body">
-              {{body}}
-            </div>
-          </div>       
-        </script>
-        <script src="js/pages/login_register.js"></script>
-        <script>
-            login_register();
-        </script>
-	</head>
-	<body> 
-	<body> 
-      <div class="container">
-      </div>
-	</body>
-=======
   <head>
     <script src="js/jquery.js"></script>
     <script src="js/handlebars.js"/></script>
     <script src="templates/sign_in.js"></script>
+    <script src="js/pages/sign_in.js"></script>
     <script type="application/javascript">
-      var template = Handlebars.compile(sign_in);
-      var context = {title: "My New Post", body: "This is my first post!"}
-      var html    = template(context);
-      $(function () {
-        $(".container").html(html);
+      $(function() {
+        render_sign_in();
       });
     </script> 
   </head>
   <body>
     <div class="container">
+      Hey
     </div>
   </body>
->>>>>>> c55582cecd6ef02df0a785aac9767e1547e5307c
 </html>
