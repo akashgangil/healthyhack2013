@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<script src="js/jquery.js"></script>
-		<script src="js/handlebars.js"></script>
-        <script id="entry-template" type="text/x-handlebars-template">
-          <div class="entry">
-            <h1>{{title}}</h1>
-            <div class="body">
-              {{body}}
-            </div>
-          </div>       
-        </script>
-        <script type="application/javascript">
-          var source   = $("#entry-template").html();
-          var template = Handlebars.compile(source);
-        </script>
-	</head>
-	<body>
-      <script type="application/javascript">
-        var context = {title: "My New Post", body: "This is my first post!"}
-        var html    = template(context);
-        $( ".container" ).append( html );
-      </script>
-      <div class="container">
-      </div>
-	</body>
+  <head>
+    <script src="js/jquery.js"></script>
+    <script src="js/handlebars.js"/></script>
+    <script src="templates/sign_in.js"></script>
+    <script type="application/javascript">
+      var template = Handlebars.compile(sign_in);
+      var context = {title: "My New Post", body: "This is my first post!"}
+      var html    = template(context);
+      $(function () {
+        $(".container").html(html);
+      });
+    </script> 
+  </head>
+  <body>
+    <div class="container">
+    </div>
+  </body>
 </html>
