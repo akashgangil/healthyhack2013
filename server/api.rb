@@ -7,6 +7,8 @@ include Mongo
 
 Mongoid.load!("mongoid.yml", :development)
 
+set :public_folder, '../client'
+
 class User
     include Mongoid::Document
 
@@ -15,8 +17,7 @@ class User
 end
 
 get '/' do
-  colls = Mongoid.default_session.collections 
-  "Welcome Radders #{colls}"
+  send_file File.join(settings.public_folder, 'index.html')
 end
 
 get '/users' do
