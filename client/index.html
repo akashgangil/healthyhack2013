@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 	<head>
 		<script src="js/jquery.js"></script>
 		<script src="js/handlebars.js"></script>
@@ -21,4 +22,23 @@
       <div class="container">
       </div>
 	</body>
+=======
+  <head>
+    <script src="js/jquery.js"></script>
+    <script src="js/handlebars.js"/></script>
+    <script src="templates/sign_in.js"></script>
+    <script type="application/javascript">
+      var template = Handlebars.compile(sign_in);
+      var context = {title: "My New Post", body: "This is my first post!"}
+      var html    = template(context);
+      $(function () {
+        $(".container").html(html);
+      });
+    </script> 
+  </head>
+  <body>
+    <div class="container">
+    </div>
+  </body>
+>>>>>>> c55582cecd6ef02df0a785aac9767e1547e5307c
 </html>
