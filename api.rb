@@ -53,15 +53,45 @@ end
 post '/rooms' do
   content_type :json
   puts "Room Name #{params[:roomName]}"
-  puts "Owner email is #{params[:email]}"
-  room = rooms.find({'name' => params[:name], :email => params[:email]}) 
+  puts "email is #{params[:email]}"
+  puts "name is #{params[:name]}"
+  room = rooms.find({'roomName' => params[:roomName]}) 
   if(!room.has_next?)
       puts "Room doesnt exist"
-      room = rooms.insert({:name => params[:name], :email => params[:email]})
-  else
-    status 400
+      room = rooms.insert(
+                          {:roomName => params[:roomName], :members => [
+                                                                        {:name => params[:name],
+                                                                         :email => params[:email]}
+                                                                       ]
+                          }
+                        ) 
+      room.to_json
+  else  
+    room = room.next
+    puts room
+    js = JSON.parse(room.to_json)
+    m = Array.new
+    m = m + js["members"]
+    m = m + [{"name" => "test", "email" => "testemail"}]
+    puts "Members"
+    puts m
+    rooms.update(
+                  {:roomName => params[:roomName]},
+                  {:members => m.to_s}
+                ).to_json
   end    
 end 
+
+
+get '/waiting_rooms' do
+  room = rooms.find({:roomName => params[:roomName]})
+  room.next.to_json
+end
+
+post '/waiting_rooms' do
+  ids = rooms.update({:roomName => params[:roomName]}, { "$set" => {"ready"=>"true"} })
+  ids.to_json
+end
 
 get '/rooms' do
   all_rooms = rooms.find()
