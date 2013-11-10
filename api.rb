@@ -125,6 +125,7 @@ get '/makecon', :provides => 'text/event-stream' do
     out.callback { connections.delete(out) }
   end
 end
+
 post '/streams' do
   x = []
   x << connections.sample
@@ -172,7 +173,7 @@ var es = new EventSource('/makecon');
 es.onmessage = function(e) { $('#chat').append(e.data + "\n") };
 
 //write
-$("form").on('submit', function(e) [
+$("form").on('submit', function(e) {
 $.post('/streams', {msg: "<%=user %>"+$('#msg').val()});
 $('#msg').val(''); $('#msg').focus();
 e.preventDefault();
