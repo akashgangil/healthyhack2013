@@ -121,7 +121,8 @@ get '/makecon', :provides => 'text/event-stream' do
   puts "check in"
   stream :keep_open do |out|
 		if(first == 0)
-			 out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"
+                        connections = []
+			out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"
 			first = first + 1
 		end
     puts "inside get streams"
@@ -144,7 +145,7 @@ post '/streams' do
   if count > r_count
     r_count = rand(20..30)
     count = 0
-    connections.each{ |out| out << "<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
+    connections.each{ |out| out << "YOU WIN YOU WINNER!<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
   end
   204
 end
