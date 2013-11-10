@@ -51,8 +51,22 @@ post '/users' do
   end  
 end
 
+post '/rooms' do
+  content_type :json
+  puts "Room Name #{params[:roomName]}"
+  puts "Owner email is #{params[:email]}"
+  room = rooms.find({'name' => params[:name], :email => params[:email]}) 
+  if(!room.has_next?)
+      puts "Room doesnt exist"
+      room = rooms.insert({:name => params[:name], :email => params[:email]})
+  else
+    status 400
+  end    
+end 
 
 get '/rooms' do
   all_rooms = rooms.find()
   all_rooms.to_json
-end  
+end 
+
+
