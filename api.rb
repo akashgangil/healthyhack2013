@@ -140,12 +140,11 @@ post '/streams' do
   x << connections.sample
   puts "inside post"
   puts x
-  x.each { |out| out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"}
   count = count+1
   if count > r_count
-    r_count = rand(20..30)
-    count = 0
-    connections.each{ |out| out << "YOU WIN YOU WINNER!<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
+    x.each{ |out| out << "YOU WIN YOU WINNER!<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
+  else
+    x.each { |out| out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"}
   end
   204
 end
