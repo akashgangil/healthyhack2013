@@ -1,6 +1,5 @@
-var template_room = '<div class="entry">\
-        <h1>{{title}}</h1>\
-        <div class="body">\
-          {{body}}\
-        </div>\
-      </div>';
+var template_room = '<button type="button" id="new_room" class="btn btn-default btn-lg">\
+											<span class="glyphicon glyphicon-plus"></span> Create New Room\
+										</button>\
+										<div class="list-group">\
+										</div>';

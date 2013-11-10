@@ -1,6 +1,8 @@
 development:
   sessions:
     default:
-      database: mine
+      database: CloudFoundry_10d72j1j_kvlpg35a
       hosts: 
-        - localhost:27017
+        - ds053698.mongolab.com:53698
+      username: CloudFoundry_10d72j1j_kvlpg35a_51di4tae 
+      password: y23s3_DeqlcHNdfTp5B9E4WTXC2-7Wbz

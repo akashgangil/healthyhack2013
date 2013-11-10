@@ -22,7 +22,7 @@ end
 
 post '/' do
   x << connections.sample
-  x.each { |out| out << "data: #{params[:msg]}\n\n" }
+  x.each { |out| out << "{poke:true}data: \"<div class=\"game_pokeball_closed\"></div>\n\n" }
   x=[]
   count=count+1
   if count > r
@@ -47,17 +47,8 @@ __END__
 <head>
 <title>Super Simple Chat with Sinatra</title>
 <meta charset="utf-8" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 </head>
-<body><%= yield %></body>
 </html>
-
-@@ login
-<form action='/'>
-<label for='user'>User Name:</label>
-<input name='user' value='' />
-<input type='submit' value="GO!" />
-</form>
 
 @@ chat
 <pre id='chat'></pre>

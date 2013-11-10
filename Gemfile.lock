@@ -11,6 +11,7 @@ GEM
     bson_ext (1.9.2)
       bson (~> 1.9.2)
     builder (3.0.4)
+    cf-app-utils (0.1)
     i18n (0.6.5)
     mongo (1.9.2)
       bson (~> 1.9.2)
@@ -37,6 +38,7 @@ PLATFORMS
 
 DEPENDENCIES
   bson_ext
+  cf-app-utils
   mongo
   mongoid (~> 3.0.0)
   sinatra
