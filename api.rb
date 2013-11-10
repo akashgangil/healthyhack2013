@@ -66,7 +66,13 @@ end
 
 get '/waiting_rooms' do
   room = rooms.find({:roomName => params[:roomName]})
-  room.to_json
+  room.next.to_json
+end
+
+post '/waiting_rooms' do
+  ids = rooms.update({:roomName => params[:roomName]}, { "$set" => {"ready"=>"true"} })
+  ids.to_json
+end
 
 get '/rooms' do
   all_rooms = rooms.find()
