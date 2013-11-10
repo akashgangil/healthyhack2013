@@ -5,9 +5,16 @@ require 'mongoid'
 
 include Mongo
 
-Mongoid.load!("mongoid.yml", :development)
+if ENV['VCAP_SERVICES']
+  db= JSON.parse(ENV['VCAP_SERVICES'])["mongolab-n/a"]
+  credentials = db.first["credentials"]
+  uri = credentials["uri"]
+  Mongoid.database = MongoClient.from_uri(uri) 
+else
+  Mongoid.load!("mongoid.yml", :development)
+end
 
-set :public_folder, '../client'
+set :public_folder, './client'
 
 class User
     include Mongoid::Document

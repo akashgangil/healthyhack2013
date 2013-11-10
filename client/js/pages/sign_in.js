@@ -13,14 +13,14 @@ function render_sign_in() {
 function check_login(user_name, parent_email) {
     alert("check login");
     $.ajax({
-        url: "http://localhost:4567/users",
+        url: "/users",
         type: "GET",
         data: { id : user_name, email: parent_email },
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
 					alert("check");
             if(jqXHR.status == 404) {
-                register(); 
+                register(user_name, parent_email); 
             }
             else if(jqXHR.status = 200) {
                 //user is logged in   
@@ -28,6 +28,9 @@ function check_login(user_name, parent_email) {
             else {
                 alert("soooo many errors in check login");   
             }
+        },
+        error: function(data) {
+                register(user_name, parent_email); 
         }
     });
 }
@@ -35,7 +38,7 @@ function check_login(user_name, parent_email) {
 function register(user_name, parent_email) {
     alert("register");
     $.ajax({
-        url: "http://localhost:4567/users",
+        url: "/users",
         type: "POST",
         data: { id : user_name, email: parent_email },
         dataType: "html",
