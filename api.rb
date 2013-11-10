@@ -86,6 +86,7 @@ end
 get '/waiting_rooms' do
   room = rooms.find({:roomName => params[:roomName]})
   room.to_json
+end
 
 get '/rooms' do
   all_rooms = rooms.find()
