@@ -29,7 +29,8 @@ function get_room_list() {
 					else if(jqXHR.status == 200) {
 						alert(data);
 						$.each(data, function(index, element) {
-							$(".list-group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
+							tmp = JSON.parse(element);
+							$(".list-group").append('<a href="#" class="list-group-item">'+tmp.roomName+'</a>');
 						});	
 					}
 					else {
@@ -54,6 +55,7 @@ function create_new_room(room_name, email) {
 					}
 					else if(jqXHR.status == 200) {
 						console.log("created new room");
+						render_waiting_room(room_name, true);
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
@@ -77,7 +79,7 @@ function join_room(room_name, email) {
 					}
 					else if(jqXHR.status == 200) {
 						console.log("joining other room");
-						render_waiting_room();
+						render_waiting_room(room_name, false);
 					}
 					else {
 						alert("check login error: " + jqXHR.status);

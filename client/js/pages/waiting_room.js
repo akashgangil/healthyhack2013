@@ -1,4 +1,4 @@
-function render_waiting_room() {
+function render_waiting_room(room_name, isAdmin) {
   var template = Handlebars.compile(template_waiting_room);
     
   var context = {}
@@ -6,20 +6,26 @@ function render_waiting_room() {
 	
 	$( ".content_container" ).html( html );
 	
-	get_room_list();
-	  
-  $("#new_room").on( "click",function() {  
-  	create_new_room($("#create_room_name").val(), global_parent_email);
-  });
+	setInterval(check_room_ready(), 2000);
+	 
+	if(isAdmin) { 
+		$(".content_container").prepend(
+			'<button type="button" id="start_game" class="btn btn-default btn-lg">\
+					<span class="glyphicon glyphicon-plus"></span> Create New Room\
+			</button>');
+		$("#start_room").on( "click", function() {  
+			start_game();
+		});
+	}
 	
 	$(".list-group-item").on("click", function() {
 		join_room($(this).html(), global_parent_email);
 	});
 }
 
-function get_room_list() {
+function check_room_ready() {
 	$.ajax({
-        url: "/rooms",
+        url: "/waiting_rooms",
         type: "GET",
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
@@ -42,7 +48,7 @@ function get_room_list() {
     });
 }
 
-function start_game(room_name, email) {
+function start_game(room_name) {
 	$.ajax({
         url: "/rooms",
         type: "POST",
@@ -54,6 +60,7 @@ function start_game(room_name, email) {
 					}
 					else if(jqXHR.status == 200) {
 						console.log("created new room");
+						//call your thing
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
