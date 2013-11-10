@@ -2,12 +2,22 @@ require 'sinatra'
 require 'mongo'
 require 'json/ext'
 require 'mongoid'
+require 'cf-app-utils'
 
 include Mongo
 
-Mongoid.load!("mongoid.yml", :development)
+#Mongoid.load!("mongoid.yml", :development)
 
-set :public_folder, '../client'
+#mongo_db = JSON.parse(ENV['VCAP_SERVICES'])["mongolab-n/a"]
+#credentials = db.first["credentials"]
+#uri = credentials["uri"]
+
+
+
+#Mongoid.database = Mongo::Connection.new(uri)
+#Mongoid.database.authenticate(user, pass)
+
+set :public_folder, 'client'
 
 class User
     include Mongoid::Document
@@ -17,6 +27,7 @@ class User
 end
 
 get '/' do
+  puts "Serve"
   send_file File.join(settings.public_folder, 'index.html')
 end
 
