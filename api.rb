@@ -143,11 +143,15 @@ post '/streams' do
   count = count+1
   if count > r_count
     puts "if"
-    x.each{ |out| out << "YOU WIN YOU WINNER!<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
+    x.each{ |out| out << "data: YOU WIN YOU WINNER!<img id='ball2' src='/img/pokeball_open.jpg' />\n\n" }
+    sleep 3
+    connections.each { |out| out << "data: Game over\n\n" }
+    count=0
   else
     puts "else"
     x.each { |out| out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"}
-  end
+    
+ end
   204
 end
 
@@ -180,9 +184,12 @@ var es = new EventSource('/makecon');
 es.onmessage = function(e) { 
 	console.log("recieved"); 
 	console.log(e.data); 
-	$('#game_container').html(e.data); 
-
-	$('#ball').mousemove(hit_pokeball); 
+	if(e.data=="Game over") {
+          window.location.href = "/";	
+	}
+	else{  $('#game_container').html(e.data); 
+	  $('#ball').mousemove(hit_pokeball); 
+	}
 };
 
 function hit_pokeball() {
@@ -191,6 +198,5 @@ function hit_pokeball() {
 }
 
 function redirect_to_home() {
-	
 }
 </script>
