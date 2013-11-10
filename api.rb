@@ -10,7 +10,7 @@ set :server,'thin'
 
 connections=[]
 
-r_count = rand(20..30)
+r_count = rand(3..7)
 
 include Mongo
 if ENV['VCAP_SERVICES']
