@@ -75,10 +75,13 @@ post '/rooms' do
     m = m + [{"name" => params[:name], "email" => params[:email]}]
     puts "Members"
     puts m
-    rooms.update(
+    r = rooms.update(
                   {:roomName => params[:roomName]},
-                  {:members => m}
+                  {:roomName => params[:roomName], :members => m}
                 ).to_json
+    puts "Updated to "
+    puts r
+    r
   end    
 end 
 
