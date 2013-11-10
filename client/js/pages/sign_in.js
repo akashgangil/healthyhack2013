@@ -16,7 +16,7 @@ function render_sign_in() {
 function check_login(user_name, parent_email) {
     alert("check login");
     $.ajax({
-        url: server_url+"/users",
+        url: "/users",
         type: "GET",
         data: { name : user_name, email: parent_email },
         dataType: "json",
@@ -42,7 +42,7 @@ function check_login(user_name, parent_email) {
 function register(user_name, parent_email) {
     alert("register");
     $.ajax({
-        url: server_url+"/users",
+        url: "/users",
         type: "POST",
         data: { name : user_name, email: parent_email },
         dataType: "html",
