@@ -142,8 +142,10 @@ post '/streams' do
   puts x
   count = count+1
   if count > r_count
+    puts "if"
     x.each{ |out| out << "YOU WIN YOU WINNER!<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
   else
+    puts "else"
     x.each { |out| out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"}
   end
   204
