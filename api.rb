@@ -21,7 +21,7 @@ db_name = uri[%r{/([^/\?]+)(\?|$)}, 1]
 db = client.db(db_name)
 
 users = db.collection("users")
-
+rooms = db.collection("rooms")
 get '/' do
   puts "Serve"
   send_file File.join(settings.public_folder, 'index.html')
@@ -55,3 +55,4 @@ end
 get '/rooms' do
   all_rooms = rooms.find()
   all_rooms.to_json
+end
