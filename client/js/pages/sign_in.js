@@ -13,9 +13,9 @@ function render_sign_in() {
 function check_login(user_name, parent_email) {
     alert("check login");
     $.ajax({
-        url: "http://localhost:4567/users",
+        url: server_url+"/users",
         type: "GET",
-        data: { id : user_name, email: parent_email },
+        data: { name : user_name, email: parent_email },
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
@@ -37,9 +37,9 @@ function check_login(user_name, parent_email) {
 function register(user_name, parent_email) {
     alert("register");
     $.ajax({
-        url: "http://localhost:4567/users",
+        url: server_url+"/users",
         type: "POST",
-        data: { id : user_name, email: parent_email },
+        data: { name : user_name, email: parent_email },
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 200) {

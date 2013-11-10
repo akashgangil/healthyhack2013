@@ -1,39 +1,59 @@
 function render_room() {
-    //var template = Handlebars.compile(template_sign_in);
+  var template = Handlebars.compile(template_room);
     
-    //var context = {}
-    //var html    = template(context);
+  var context = {}
+  var html    = template(context);
 	
-		var es = new EventSource('/stream');
-		es.onmessage = function(e) { 
-			$( ".content_container" ).html(e.data + "\n"); 
-		};
-    
-    $(".game_pokeball").on( "click",function() {  
-        pokeball_clicked();
-    });
+	get_room_list();
+	  
+  $("#new_room").on( "click",function() {  
+  	create_new_room();
+  });
 }
 
-function check_if_torch() {
-    alert("torch check");
-    $.ajax({
-        url: "http://localhost:4567/users",
+function get_room_list() {
+	$.ajax({
+        url: server_url+"/room",
         type: "GET",
-        data: { id : user_name, email: parent_email },
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						register(user_name, parent_email);
+						//error occurred
 					}
 					else if(jqXHR.status == 200) {
-						alert("user is logged in. do something?");
+						$.each(data, function(index, element) {
+							$(".list_group").append('<a href="#" class="list-group-item">'+element.room_name+'</a>');
+						});	
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-					register(user_name, parent_email); 
+					console.log("couldn't retrieve servers");
+				}
+    });
+}
+
+function create_new_room() {
+	$.ajax({
+        url: server_url+"/room",
+        type: "POST",
+        data: {},
+        dataType: "html",
+        success: function(data, textStatus, jqXHR) {
+					if(jqXHR.status == 404) {
+						//error occurred
+					}
+					else if(jqXHR.status == 200) {
+						//$(".list_group").append();
+					}
+					else {
+						alert("check login error: " + jqXHR.status);
+					}
+        },
+				error: function(data) {
+					//recieved error
 				}
     });
 }
@@ -41,7 +61,7 @@ function check_if_torch() {
 function pokeball_clicked() {
     alert("pokeball clicked");
     $.ajax({
-        url: "http://localhost:4567/room",
+        url: server_url+"/room",
         type: "POST",
         data: {msg: "torch_pass"},
         dataType: "html",
