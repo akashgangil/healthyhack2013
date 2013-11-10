@@ -100,8 +100,10 @@ get '/waiting_rooms' do
   room = rooms.find({:roomName => params[:roomName]})
   room.next.to_json
 end
+first = 0
 
 post '/waiting_rooms' do
+	first = 0
   ids = rooms.update({:roomName => params[:roomName]}, { "$set" => {"ready"=>"true"} })
   ids.to_json
 end
@@ -118,6 +120,10 @@ end
 get '/makecon', :provides => 'text/event-stream' do
   puts "check in"
   stream :keep_open do |out|
+		if(first == 0)
+			 out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"
+			first = first + 1
+		end
     puts "inside get streams"
     connections << out
     out.callback { connections.delete(out) }
@@ -133,12 +139,12 @@ post '/streams' do
   x << connections.sample
   puts "inside post"
   puts x
-  x.each { |out| out << "data: /img/pokeball_closed.png\n\n"}
+  x.each { |out| out << "data: <img id='ball' src='/img/pokeball_closed.png' />\n\n"}
   count = count+1
   if count > r_count
     r_count = rand(20..30)
     count = 0
-    connections.each{ |out| out << "data: Game Over\n\n" }
+    connections.each{ |out| out << "<img id='ball' src='/img/pokeball_open.jpg' />\n\n" }
   end
   204
 end
@@ -146,6 +152,7 @@ end
 __END__
 
 @@ layout
+<!DOCTYPE html>
 <html>
 <head>
 <title>Super Simple Chat with Sinatra</title>
@@ -163,21 +170,25 @@ __END__
 </form>
 
 @@chat
-<img id='ball'/>
-<form>
-<input id='msg' placeholder='message here'/>
-<input type='submit' value ='send'>
-</form>
+<div id='game_container'></div>
 
 <script>
 //read
 var es = new EventSource('/makecon');
-es.onmessage = function(e) { console.log("recieved"); console.log(e.data); $('#ball').attr('src',e.data) };
+es.onmessage = function(e) { 
+	console.log("recieved"); 
+	console.log(e.data); 
+	$('#game_container').html(e.data); 
 
-//write
-$("form").on('submit', function(e) {
-$.post('/streams', {msg: "<%=user %>"+$('#msg').val()});
-$('#msg').val(''); $('#msg').focus();
-e.preventDefault();
-});
+	$('#ball').mousemove(hit_pokeball); 
+};
+
+function hit_pokeball() {
+	$('#game_container').html('');
+	$.post('/streams', {msg: "<%=user %>"+"doesn't matter"});
+}
+
+function redirect_to_home() {
+	
+}
 </script>
