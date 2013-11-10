@@ -50,3 +50,8 @@ post '/users' do
     status 400
   end  
 end
+
+
+get '/rooms' do
+  all_rooms = rooms.find()
+  all_rooms.to_json
