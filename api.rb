@@ -72,12 +72,12 @@ post '/rooms' do
     js = JSON.parse(room.to_json)
     m = Array.new
     m = m + js["members"]
-    m = m + [{"name" => "test", "email" => "testemail"}]
+    m = m + [{"name" => params[:name], "email" => params[:email]}]
     puts "Members"
     puts m
     rooms.update(
                   {:roomName => params[:roomName]},
-                  {:members => m.to_s}
+                  {:members => m}
                 ).to_json
   end    
 end 
