@@ -1,9 +1,12 @@
+var global_user_name;
+var global_parent_email;
+
 function render_sign_in() {
     var template = Handlebars.compile(template_sign_in);
     
     var context = {}
     var html    = template(context);
-    $( ".content_container" ).append( html );
+    $( ".content_container" ).html( html );
     
     $("#sign_in").on( "click",function() {  
         check_login($("#user_name").val(), $("#parent_email").val());  
@@ -22,6 +25,8 @@ function check_login(user_name, parent_email) {
 						register(user_name, parent_email);
 					}
 					else if(jqXHR.status == 200) {
+						global_user_name = user_name;
+						global_parent_email = parent_email;
 						alert("user is logged in. do something?");
 					}
 					else {

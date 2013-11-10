@@ -4,25 +4,31 @@ function render_room() {
   var context = {}
   var html    = template(context);
 	
+	$( ".content_container" ).html( html );
+	
 	get_room_list();
 	  
   $("#new_room").on( "click",function() {  
-  	create_new_room();
+  	create_new_room($("#create_room_name").val());
   });
+	
+	$(".list-group-item").on("click", function() {
+		join_room($(this).html(), global_parent_email);
+	});
 }
 
 function get_room_list() {
 	$.ajax({
-        url: server_url+"/room",
+        url: "/rooms",
         type: "GET",
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						//error occurred
+						console.log("404 getting room list");
 					}
 					else if(jqXHR.status == 200) {
 						$.each(data, function(index, element) {
-							$(".list_group").append('<a href="#" class="list-group-item">'+element.room_name+'</a>');
+							$(".list_group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
 						});	
 					}
 					else {
@@ -35,49 +41,72 @@ function get_room_list() {
     });
 }
 
-function create_new_room() {
+function create_new_room(room_name, email) {
 	$.ajax({
-        url: server_url+"/room",
+        url: "/rooms",
         type: "POST",
-        data: {},
+        data: { roomName: room_name, email: email},
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						//error occurred
+						console.log("404 creating new room");
 					}
 					else if(jqXHR.status == 200) {
-						//$(".list_group").append();
+						console.log("created new room");
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-					//recieved error
+					console.log("error creating room");
 				}
     });
 }
 
-function pokeball_clicked() {
-    alert("pokeball clicked");
-    $.ajax({
-        url: server_url+"/room",
+function join_room(room_name, email) {
+	$.ajax({
+        url: "/rooms",
         type: "POST",
-        data: {msg: "torch_pass"},
+        data: { roomName: room_name, email: email},
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						//error occurred
+						console.log("404 joining room");
 					}
 					else if(jqXHR.status == 200) {
-						//torch was passed to somebody
+						console.log("joining other room");
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-					//recieved error
+					console.log("error joining room");
 				}
     });
+}
+
+//function pokeball_clicked() {
+//    alert("pokeball clicked");
+//    $.ajax({
+//        url: server_url+"/room",
+//        type: "POST",
+//        data: {msg: "torch_pass"},
+//        dataType: "html",
+//        success: function(data, textStatus, jqXHR) {
+//					if(jqXHR.status == 404) {
+//						//error occurred
+//					}
+//					else if(jqXHR.status == 200) {
+//						//torch was passed to somebody
+//					}
+//					else {
+//						alert("check login error: " + jqXHR.status);
+//					}
+//        },
+//				error: function(data) {
+//					//recieved error
+//				}
+//    });
 }
