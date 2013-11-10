@@ -39,7 +39,6 @@ function check_login(user_name, parent_email) {
 }
 
 function register(user_name, parent_email) {
-    alert("register");
     $.ajax({
         url: "/users",
         type: "POST",

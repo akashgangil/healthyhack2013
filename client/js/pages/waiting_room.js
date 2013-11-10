@@ -1,5 +1,5 @@
-function render_room() {
-  var template = Handlebars.compile(template_room);
+function render_waiting_room() {
+  var template = Handlebars.compile(template_waiting_room);
     
   var context = {}
   var html    = template(context);
@@ -43,7 +43,6 @@ function get_room_list() {
 }
 
 function create_new_room(room_name, email) {
-	alert(room_name + ":" + email);
 	$.ajax({
         url: "/rooms",
         type: "POST",
@@ -65,50 +64,3 @@ function create_new_room(room_name, email) {
 				}
     });
 }
-
-function join_room(room_name, email) {
-	$.ajax({
-        url: "/rooms",
-        type: "POST",
-        data: { roomName: room_name, email: email},
-        dataType: "html",
-        success: function(data, textStatus, jqXHR) {
-					if(jqXHR.status == 404) {
-						console.log("404 joining room");
-					}
-					else if(jqXHR.status == 200) {
-						console.log("joining other room");
-					}
-					else {
-						alert("check login error: " + jqXHR.status);
-					}
-        },
-				error: function(data) {
-					console.log("error joining room");
-				}
-    });
-}
-
-//function pokeball_clicked() {
-//    alert("pokeball clicked");
-//    $.ajax({
-//        url: server_url+"/room",
-//        type: "POST",
-//        data: {msg: "torch_pass"},
-//        dataType: "html",
-//        success: function(data, textStatus, jqXHR) {
-//					if(jqXHR.status == 404) {
-//						//error occurred
-//					}
-//					else if(jqXHR.status == 200) {
-//						//torch was passed to somebody
-//					}
-//					else {
-//						alert("check login error: " + jqXHR.status);
-//					}
-//        },
-//				error: function(data) {
-//					//recieved error
-//				}
-//    });
-//}

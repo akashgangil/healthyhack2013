@@ -43,7 +43,6 @@ function get_room_list() {
 }
 
 function create_new_room(room_name, email) {
-	alert(room_name + ":" + email);
 	$.ajax({
         url: "/rooms",
         type: "POST",
@@ -78,6 +77,7 @@ function join_room(room_name, email) {
 					}
 					else if(jqXHR.status == 200) {
 						console.log("joining other room");
+						render_waiting_room();
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
