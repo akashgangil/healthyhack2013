@@ -29,7 +29,7 @@ function get_room_list() {
 					else if(jqXHR.status == 200) {
 						alert(data);
 						$.each(data, function(index, element) {
-							$(".list_group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
+							$(".list-group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
 						});	
 					}
 					else {

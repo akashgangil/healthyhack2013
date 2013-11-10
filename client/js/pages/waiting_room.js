@@ -42,7 +42,7 @@ function get_room_list() {
     });
 }
 
-function create_new_room(room_name, email) {
+function start_game(room_name, email) {
 	$.ajax({
         url: "/rooms",
         type: "POST",
