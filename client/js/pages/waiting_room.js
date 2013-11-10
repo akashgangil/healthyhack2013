@@ -6,7 +6,7 @@ function render_waiting_room(room_name, isAdmin) {
 	
 	$( ".content_container" ).html( html );
 	
-	setInterval(check_room_ready(room_name), 2000);
+	setInterval(function() {check_room_ready(room_name)}, 2000);
 	 
 	if(isAdmin) { 
 		$(".content_container").prepend(
@@ -30,10 +30,16 @@ function check_room_ready(room_name) {
 						console.log("404 checking room ready");
 					}
 					else if(jqXHR.status == 200) {
-						alert("check room ready: room: " + data);
-//						$.each(data, function(index, element) {
-//							$(".list_group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
-//						});	
+						console.log("check room ready: room: " + data);
+						
+						if(data.ready != null) {
+							clearInterval();
+							//start the game
+						}
+						$(".list-group").html("");
+						$.each(data.members, function(index, element) {
+							$(".list-group").append('<a href="#" class="list-group-item">'+element.name+'</a>');
+						});	
 					}
 					else {
 						console.log("check room ready error: " + jqXHR.status);

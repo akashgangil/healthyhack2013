@@ -6,7 +6,7 @@ function render_room() {
 	
 	$( ".content_container" ).html( html );
 	
-	get_room_list();
+	get_room_list(global_parent_email, global_user_name);
 	  
   $("#new_room").on( "click",function() {  
   	create_new_room($("#create_room_name").val(), global_parent_email, global_user_name);
