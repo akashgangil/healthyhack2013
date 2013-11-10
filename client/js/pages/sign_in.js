@@ -14,7 +14,6 @@ function render_sign_in() {
 }
 
 function check_login(user_name, parent_email) {
-    alert("check login");
     $.ajax({
         url: "/users",
         type: "GET",
@@ -30,7 +29,7 @@ function check_login(user_name, parent_email) {
 						render_room();
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("error found");
 					}
         },
 				error: function(data) {
@@ -51,11 +50,11 @@ function register(user_name, parent_email) {
 						check_login(user_name, parent_email);
 					}
 					else {
-						alert("register error: " + jqXHR.status);
+						console.log("register error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-						alert("so many errors in register");
+						console.log("register error");
 				}
     });
 }
