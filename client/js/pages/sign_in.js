@@ -18,17 +18,19 @@ function check_login(user_name, parent_email) {
         data: { id : user_name, email: parent_email },
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
-					alert("check");
-            if(jqXHR.status == 404) {
-                register(); 
-            }
-            else if(jqXHR.status = 200) {
-                //user is logged in   
-            }
-            else {
-                alert("soooo many errors in check login");   
-            }
-        }
+					if(jqXHR.status == 404) {
+						register(user_name, parent_email);
+					}
+					else if(jqXHR.status == 200) {
+						alert("user is logged in. do something?");
+					}
+					else {
+						alert("check login error: " + jqXHR.status);
+					}
+        },
+				error: function(data) {
+					register(user_name, parent_email); 
+				}
     });
 }
 
@@ -42,6 +44,9 @@ function register(user_name, parent_email) {
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 200) {
 						check_login(user_name, parent_email);
+					}
+					else {
+						alert("register error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
