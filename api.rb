@@ -55,4 +55,4 @@ end
 get '/rooms' do
   all_rooms = rooms.find()
   all_rooms.to_json
-end
+end  
