@@ -65,7 +65,9 @@ end
 
 get '/rooms' do
   all_rooms = rooms.find()
-  all_rooms.toArray().to_json
+  out = Array.new
+  all_rooms.each { |row| out = out + [row.to_json] }
+  out.to_json
 end 
 
 
