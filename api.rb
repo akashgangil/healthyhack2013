@@ -144,7 +144,6 @@ post '/streams' do
   if count > r_count
     puts "if"
     x.each{ |out| out << "data: YOU WIN YOU WINNER!<img id='ball2' src='/img/pokeball_open.jpg' />\n\n" }
-    sleep 3
     connections.each { |out| out << "data: Game over\n\n" }
     count=0
   else
@@ -185,7 +184,8 @@ es.onmessage = function(e) {
 	console.log("recieved"); 
 	console.log(e.data); 
 	if(e.data=="Game over") {
-          window.location.href = "/";	
+    		setTimeout(function() { window.location.href = "/";
+			}, 3000);	
 	}
 	else{  $('#game_container').html(e.data); 
 	  $('#ball').mousemove(hit_pokeball); 
