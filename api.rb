@@ -63,6 +63,11 @@ post '/rooms' do
   end    
 end 
 
+
+get '/waiting_rooms' do
+  room = rooms.find({:roomName => params[:roomName]})
+  room.to_json
+
 get '/rooms' do
   all_rooms = rooms.find()
   out = Array.new
