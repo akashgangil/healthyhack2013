@@ -4,4 +4,3 @@ gem 'cf-app-utils'
 gem 'sinatra'
 gem 'bson_ext'
 gem 'mongo'
-gem "mongo_mapper"

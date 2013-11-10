@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'mongo'
 require 'json/ext'
-require 'mongo_mapper'
 require 'cf-app-utils'
 
 include Mongo

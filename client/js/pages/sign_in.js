@@ -27,7 +27,7 @@ function check_login(user_name, parent_email) {
 					else if(jqXHR.status == 200) {
 						global_user_name = user_name;
 						global_parent_email = parent_email;
-						alert("user is logged in. do something?");
+						render_room();
 					}
 					else {
 						alert("check login error: " + jqXHR.status);
