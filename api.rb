@@ -10,7 +10,7 @@ set :server,'thin'
 
 connections=[]
 
-r= rand(20..30)
+r_count = rand(20..30)
 
 include Mongo
 if ENV['VCAP_SERVICES']
@@ -124,15 +124,19 @@ get '/makecon', :provides => 'text/event-stream' do
   end
 end
 
+count = 0
+
 post '/streams' do
+  puts count
+  puts r_count
   x = []
   x << connections.sample
   puts "inside post"
-  x.each { |out| out << "data: rushil\n\n"}
+  puts x
+  x.each { |out| out << "data: /img/pokeball_closed.png\n\n"}
   count = count+1
-  if count > r
-    puts r
-    r = rand(20..30)
+  if count > r_count
+    r_count = rand(20..30)
     count = 0
     connections.each{ |out| out << "data: Game Over\n\n" }
   end
@@ -159,7 +163,7 @@ __END__
 </form>
 
 @@chat
-<pre id='chat'></pre>
+<img id='ball'/>
 <form>
 <input id='msg' placeholder='message here'/>
 <input type='submit' value ='send'>
@@ -168,7 +172,7 @@ __END__
 <script>
 //read
 var es = new EventSource('/makecon');
-es.onmessage = function(e) { $('#chat').append(e.data + "\n") };
+es.onmessage = function(e) { console.log("recieved"); console.log(e.data); $('#ball').attr('src',e.data) };
 
 //write
 $("form").on('submit', function(e) {

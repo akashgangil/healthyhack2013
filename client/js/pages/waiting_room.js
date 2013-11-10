@@ -1,3 +1,4 @@
+var i;
 function render_waiting_room(room_name, isAdmin) {
   var template = Handlebars.compile(template_waiting_room);
     
@@ -6,16 +7,16 @@ function render_waiting_room(room_name, isAdmin) {
 	
 	$( ".content_container" ).html( html );
 	
-	setInterval(function() {check_room_ready(room_name)}, 2000);
+	i = setInterval(function() {check_room_ready(room_name)}, 2000);
 	 
 	if(isAdmin) { 
 		$(".content_container").prepend(
-			'<button type="button" id="start_game" class="btn btn-default btn-lg">\
-					Start Game\
-			</button>');
-		$("#start_room").on( "click", function() {  
+			'Once all of the players have joined, please select: <br/><button type="button" id="start_game" class="btn btn-default btn-lg">Start Game</button>');
+		$("#start_game").on( "click", function() {  
 			start_game(room_name);
 		});
+	} else {
+		$(".content_container").prepend('Waiting to start...');
 	}
 }
 
@@ -30,11 +31,11 @@ function check_room_ready(room_name) {
 						console.log("404 checking room ready");
 					}
 					else if(jqXHR.status == 200) {
-						console.log("check room ready: room: " + data);
-						
-						if(data && data.ready != null) {
-							clearInterval();
-							//start the game
+						console.log("check room ready: room: ");
+						console.log(data);
+						if(data && data.ready == "true") {
+							clearInterval(i);
+					  		window.location = "/stream?roomName="+room_name+"&user="+global_user_name;
 						}
 						$(".list-group").html("");
 						$.each(data.members, function(index, element) {
@@ -52,8 +53,9 @@ function check_room_ready(room_name) {
 }
 
 function start_game(room_name) {
+	clearInterval(i);
 	$.ajax({
-        url: "/rooms",
+        url: "/waiting_rooms",
         type: "POST",
         data: { roomName: room_name},
         dataType: "html",
@@ -62,9 +64,8 @@ function start_game(room_name) {
 						console.log("404 starting game");
 					}
 					else if(jqXHR.status == 200) {
-						console.log("created new room");
-						//call your thing
-					}
+					  window.location = "/stream?roomName="+room_name+"&user="+global_user_name;
+                                        }
 					else {
 						console.log("start game error: " + jqXHR.status);
 					}
