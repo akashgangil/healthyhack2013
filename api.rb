@@ -65,7 +65,7 @@ end
 
 get '/rooms' do
   all_rooms = rooms.find()
-  all_rooms.to_json
+  all_rooms.toArray().to_json
 end 
 
 
