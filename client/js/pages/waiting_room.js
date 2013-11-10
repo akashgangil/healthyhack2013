@@ -6,44 +6,41 @@ function render_waiting_room(room_name, isAdmin) {
 	
 	$( ".content_container" ).html( html );
 	
-	setInterval(check_room_ready(), 2000);
+	setInterval(check_room_ready(room_name), 2000);
 	 
 	if(isAdmin) { 
 		$(".content_container").prepend(
 			'<button type="button" id="start_game" class="btn btn-default btn-lg">\
-					<span class="glyphicon glyphicon-plus"></span> Create New Room\
+					Start Game\
 			</button>');
 		$("#start_room").on( "click", function() {  
-			start_game();
+			start_game(room_name);
 		});
 	}
-	
-	$(".list-group-item").on("click", function() {
-		join_room($(this).html(), global_parent_email);
-	});
 }
 
-function check_room_ready() {
+function check_room_ready(room_name) {
 	$.ajax({
         url: "/waiting_rooms",
         type: "GET",
+				data: { roomName: room_name},
         dataType: "json",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						console.log("404 getting room list");
+						console.log("404 checking room ready");
 					}
 					else if(jqXHR.status == 200) {
-						alert(data);
-						$.each(data, function(index, element) {
-							$(".list_group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
-						});	
+						alert("check room ready: room: " + data);
+//						$.each(data, function(index, element) {
+//							$(".list_group").append('<a href="#" class="list-group-item">'+element.roomName+'</a>');
+//						});	
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("check room ready error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-					console.log("couldn't retrieve servers");
+					console.log("error checking if room is ready");
 				}
     });
 }
@@ -52,22 +49,22 @@ function start_game(room_name) {
 	$.ajax({
         url: "/rooms",
         type: "POST",
-        data: { roomName: room_name, email: email},
+        data: { roomName: room_name},
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
-						console.log("404 creating new room");
+						console.log("404 starting game");
 					}
 					else if(jqXHR.status == 200) {
 						console.log("created new room");
 						//call your thing
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("start game error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
-					console.log("error creating room");
+					console.log("error starting game");
 				}
     });
 }

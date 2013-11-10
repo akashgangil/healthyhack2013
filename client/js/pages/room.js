@@ -9,15 +9,11 @@ function render_room() {
 	get_room_list();
 	  
   $("#new_room").on( "click",function() {  
-  	create_new_room($("#create_room_name").val(), global_parent_email);
+  	create_new_room($("#create_room_name").val(), global_parent_email, global_user_name);
   });
-	
-	$(".list-group-item").on("click", function() {
-		join_room($(this).html(), global_parent_email);
-	});
 }
 
-function get_room_list() {
+function get_room_list(email, name) {
 	$.ajax({
         url: "/rooms",
         type: "GET",
@@ -27,14 +23,17 @@ function get_room_list() {
 						console.log("404 getting room list");
 					}
 					else if(jqXHR.status == 200) {
-						alert(data);
 						$.each(data, function(index, element) {
 							tmp = JSON.parse(element);
 							$(".list-group").append('<a href="#" class="list-group-item">'+tmp.roomName+'</a>');
 						});	
+						$(".list-group-item").on("click", function(e) {
+							e.preventDefault();
+							join_room($(this).html(), email, name);
+						});
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
@@ -43,11 +42,11 @@ function get_room_list() {
     });
 }
 
-function create_new_room(room_name, email) {
+function create_new_room(room_name, email, name) {
 	$.ajax({
         url: "/rooms",
         type: "POST",
-        data: { roomName: room_name, email: email},
+        data: { roomName: room_name, email: email, name: name},
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
@@ -58,7 +57,7 @@ function create_new_room(room_name, email) {
 						render_waiting_room(room_name, true);
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
@@ -67,11 +66,11 @@ function create_new_room(room_name, email) {
     });
 }
 
-function join_room(room_name, email) {
+function join_room(room_name, email, name) {
 	$.ajax({
         url: "/rooms",
         type: "POST",
-        data: { roomName: room_name, email: email},
+        data: { roomName: room_name, email: email, name: name},
         dataType: "html",
         success: function(data, textStatus, jqXHR) {
 					if(jqXHR.status == 404) {
@@ -82,7 +81,7 @@ function join_room(room_name, email) {
 						render_waiting_room(room_name, false);
 					}
 					else {
-						alert("check login error: " + jqXHR.status);
+						console.log("check login error: " + jqXHR.status);
 					}
         },
 				error: function(data) {
