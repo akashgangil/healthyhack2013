@@ -13,23 +13,16 @@ else
   uri = 'mongodb://CloudFoundry_46pg6anj_ejufv6k0_h48mhcne:_zj_Wtoi9qhLZNDKy5IxC-Q0JJjbviAW@ds053788.mongolab.com:53788/CloudFoundry_46pg6anj_ejufv6k0'
 end
 
-  
+set :public_folder, './client'
+
 client = Mongo::MongoClient.from_uri(uri)
 
 db_name = uri[%r{/([^/\?]+)(\?|$)}, 1]
 db = client.db(db_name)
 
-set :public_folder, './client'
-#Mongoid.load!("mongoid.yml", :development)
-
-class User
-    include MongoMapper::Document
-    key :name, String
-    key :email, String
-end
+users = db.collection("users")
 
 get '/' do
-  puts User.all()
   puts "Serve"
   send_file File.join(settings.public_folder, 'index.html')
 end
@@ -37,9 +30,9 @@ end
 get '/users' do
   puts "GET on USERS! #{params[:name]}"
   content_type :json
-  users = User.where(:name => params[:name], :email => params[:email])
-  if(users.exists?)
-      users.first.to_json
+  user = users.find({ 'name' => params[:name], 'email'=> params[:email] })
+  if(user.has_next?)
+      user.next.to_json
   else
       status 404
   end
@@ -49,11 +42,10 @@ post '/users' do
   content_type :json
   puts "Name is #{params[:name]}"
   puts "Email is #{params[:email]}"
-  user = User.where(:name => params[:name], :email => params[:email])
-  if(!user.exists?) 
+  user = users.find({ 'name' => params[:name], 'email'=> params[:email] })
+  if(!user.has_next?) 
     puts "User not present, inserting into the database"
-    user = User.new(:name => params[:name] , :email => params[:email])
-    user.save!
+    user = users.insert({:name => params[:name] , :email => params[:email]})
   else
     status 400
   end  
