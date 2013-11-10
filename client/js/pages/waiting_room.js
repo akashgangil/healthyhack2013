@@ -32,7 +32,7 @@ function check_room_ready(room_name) {
 					else if(jqXHR.status == 200) {
 						console.log("check room ready: room: " + data);
 						
-						if(data.ready != null) {
+						if(data && data.ready != null) {
 							clearInterval();
 							//start the game
 						}
